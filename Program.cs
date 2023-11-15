@@ -1,7 +1,11 @@
+using Microsoft.EntityFrameworkCore;
+using SistemaVideos.Context;
+
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers();
+builder.Services.AddDbContext<VideoContext>(opt => opt.UseInMemoryDatabase("ListaVideos"));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
