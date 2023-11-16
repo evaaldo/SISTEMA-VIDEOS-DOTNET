@@ -88,6 +88,27 @@ namespace SistemaVideos.Controller
             return NoContent();
         }
 
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteVideo(int id)
+        {
+            if(_context.Videos == null)
+            {
+                return NotFound();
+            }
+
+            var video = await _context.Videos.FindAsync(id);
+
+            if(video == null)
+            {
+                return NotFound();
+            }
+
+            _context.Videos.Remove(video);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
         private bool VideoExists(int id)
         {
             return(_context.Videos?.Any(e => e.ID == id)).GetValueOrDefault();
