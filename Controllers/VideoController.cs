@@ -58,6 +58,39 @@ namespace SistemaVideos.Controller
 
             return CreatedAtAction("GetVideos", new { id = video.ID }, video);
         }
-        
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutVideo(int id, Video video)
+        {
+            if(id != video.ID)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(video).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch(DbUpdateConcurrencyException)
+            {
+                if(!VideoExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        private bool VideoExists(int id)
+        {
+            return(_context.Videos?.Any(e => e.ID == id)).GetValueOrDefault();
+        }
     }
 }
