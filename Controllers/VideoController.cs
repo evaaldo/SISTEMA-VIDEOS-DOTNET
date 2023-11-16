@@ -26,5 +26,23 @@ namespace SistemaVideos.Controller
 
             return await _context.Videos.ToListAsync();
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Video>> GetVideo(int id)
+        {
+            if(_context.Videos == null)
+            {
+                return NotFound();
+            }
+
+            var video = await _context.Videos.FindAsync(id);
+
+            if(video == null)
+            {
+                return NotFound();
+            }
+
+            return video;
+        }
     }
 }
