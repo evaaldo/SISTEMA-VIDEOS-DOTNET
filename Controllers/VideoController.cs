@@ -28,7 +28,7 @@ namespace SistemaVideos.Controller
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Video>> GetVideo(int id)
+        public async Task<ActionResult<Video>> GetVideos(int id)
         {
             if(_context.Videos == null)
             {
@@ -44,5 +44,20 @@ namespace SistemaVideos.Controller
 
             return video;
         }
+
+        [HttpPost]
+        public async Task<ActionResult<Video>> PostVideo(Video video)
+        {
+            if(_context.Videos == null)
+            {
+                return Problem("O construtor do usuário é nulo");
+            }
+
+            _context.Videos.Add(video);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetVideos", new { id = video.ID }, video);
+        }
+        
     }
 }
